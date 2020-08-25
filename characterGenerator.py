@@ -5,14 +5,17 @@
 # CHECK # Race
 # CHECK # Age multiplier depending on Race
 # # Quirk
-# # Class
-# # Occupation
+# CHECK # Class
+# CHECK # Occupation
+# CHECK # Add Occupations list to characterClassesAndRaces data file
+# # Add "None" value to Age when rolling and no boxes checked.
+# # Add "Roll All" button
 
 import random
-import characterTraits as cT
+import data.characterTraits as cT
 posNeuNeg = ["Positive: ","Neutral: ","Negative: "]
-import characterNames as cN
-import characterClassesAndRaces as cCR
+import data.characterNames as cN
+import data.characterClassesAndRaces as cCR
 import tkinter
 from tkinter import *
 
@@ -32,6 +35,8 @@ class CharGen:
         self.nameText = tkinter.StringVar()
         self.ageText = tkinter.StringVar()
         self.raceText = tkinter.StringVar()
+        self.classText = tkinter.StringVar()
+        self.occupationText = tkinter.StringVar()
 
         #Creates, populates and packs the frame for the NAME section.
         self.nameGenderFrame = LabelFrame(self.mainWindow, text = "Name",width=300,height=110)
@@ -42,8 +47,6 @@ class CharGen:
 
         self.maleCheckButton = Checkbutton(self.nameGenderFrame, text="Male", variable=self.maleVar).pack(anchor=W)
         self.femaleCheckButton = Checkbutton(self.nameGenderFrame, text="Female", variable=self.femaleVar).pack(anchor=W)
-        
-        #self.nameGenderFrame.pack(fill = "x", expand = "yes",anchor=W)
 
         self.nameText.set("Roll Name")
         tkinter.Label(self.nameGenderFrame, textvariable = self.nameText).pack()
@@ -56,7 +59,7 @@ class CharGen:
         self.raceLabelFrame = LabelFrame(self.mainWindow, text = "Race",width=300,height=110)
         self.raceLabelFrame.grid(row=0,column=1)
         self.raceLabelFrame.pack_propagate(0)
-        #self.raceLabelFrame.pack(fill = "x", expand = "yes",anchor=W)
+
         self.raceText.set("Roll Race")
         tkinter.Label(self.raceLabelFrame, textvariable = self.raceText).pack()
 
@@ -64,11 +67,34 @@ class CharGen:
         self.raceReRoll_button = tkinter.Button(self.raceLabelFrame, text = "Roll!",
         command = self.UpdateRaceText).pack(anchor=E)
 
+        #Creates, populates and packs the frame for the CLASS section.
+        self.classLabelFrame = LabelFrame(self.mainWindow, text = "Class",width=300,height=110)
+        self.classLabelFrame.grid(row=2,column=1)
+        self.classLabelFrame.pack_propagate(0)
+        
+        self.classText.set("Roll Class")
+        tkinter.Label(self.classLabelFrame, textvariable = self.classText).pack()
+
+        #Now we roll the CLASS
+        self.classReRoll_button = tkinter.Button(self.classLabelFrame, text = "Roll!",
+        command = self.UpdateClassText).pack(anchor=E)
+
+#Creates, populates and packs the frame for the OCCUPATION section.
+        self.occupationLabelFrame = LabelFrame(self.mainWindow, text = "Occupation",width=300,height=110)
+        self.occupationLabelFrame.grid(row=3,column=1)
+        self.occupationLabelFrame.pack_propagate(0)
+        
+        self.occupationText.set("Roll Occupation")
+        tkinter.Label(self.occupationLabelFrame, textvariable = self.occupationText).pack()
+
+        #Now we roll the OCCUPATION
+        self.occupationReRoll_button = tkinter.Button(self.occupationLabelFrame, text = "Roll!",
+        command = self.UpdateOccupationText).pack(anchor=E)
+
         #Creates, populates and packs the frame for the TRAIT section.
         self.traitlabelframe = LabelFrame(self.mainWindow, text = "Traits",width=600,height=110)
         self.traitlabelframe.grid(row=1,column=0,columnspan=2)
         self.traitlabelframe.pack_propagate(0)
-        #self.traitlabelframe.pack(fill = "x", expand = "yes",anchor=W)
         self.traitText.set("Roll Traits")
         tkinter.Label(self.traitlabelframe, textvariable = self.traitText).pack()
 
@@ -78,8 +104,8 @@ class CharGen:
         self.reRoll_button.pack(anchor=E)
 
         #Creates, populates and packs the frame for the AGE SELECTION section.
-        self.ageSelectFrame = LabelFrame(self.mainWindow, text = "Age",width=600,height=210)
-        self.ageSelectFrame.grid(row=2,column=0,columnspan=2)
+        self.ageSelectFrame = LabelFrame(self.mainWindow, text = "Age",width=300,height=220)
+        self.ageSelectFrame.grid(row=2,column=0,rowspan=2)
         self.ageSelectFrame.pack_propagate(0)
 
         self.infantVar = IntVar()
@@ -95,8 +121,6 @@ class CharGen:
         self.youngAdultCheckButton = Checkbutton(self.ageSelectFrame, text="Young Adult", variable=self.youngAdultVar).pack(anchor=W)
         self.adultCheckButton = Checkbutton(self.ageSelectFrame, text="Adult", variable=self.adultVar).pack(anchor=W)
         self.seniorCheckButton = Checkbutton(self.ageSelectFrame, text="Senior", variable=self.seniorVar).pack(anchor=W)
-
-        #self.ageSelectFrame.pack(fill = "x", expand = "yes",anchor=W)
 
         self.ageText.set("Roll Age")
         tkinter.Label(self.ageSelectFrame, textvariable = self.ageText).pack()
@@ -140,6 +164,25 @@ class CharGen:
     
     def UpdateRaceText(self):
         self.raceText.set(self.RandomizeRace())
+
+    #Class Randomization
+    def RandomizeClass(self):
+        self.randClassIndex = random.choice(list(cCR.Classes))
+
+        return self.randClassIndex
+    
+    def UpdateClassText(self):
+        self.classText.set(self.RandomizeClass())
+
+    #Occupation Randomization
+    def RandomizeOccupation(self):
+        self.randOccupationIndex = random.choice(list(cCR.Occupations))
+
+        return self.randOccupationIndex
+    
+    def UpdateOccupationText(self):
+        self.occupationText.set(self.RandomizeOccupation())
+
 
     #Trait Randomization
     def RandomizeTraits(self):

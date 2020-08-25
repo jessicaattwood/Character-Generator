@@ -13,6 +13,38 @@ Classes = [
 "Bard"
 ]
 
+Occupations = [
+"Bar Keeper",
+"Janitor",
+"Maid",
+"Chef",
+"Baker",
+"Farmer",
+"Rancher",
+"Student",
+"Accountant",
+"Military",
+"Politician",
+"Unemployed",
+"Carpenter",
+"Barista",
+"Florist",
+"Grocer",
+"Electrician",
+"Plumber",
+"Scientist",
+"Doctor",
+"Fire Fighter",
+"Miner",
+"Blacksmith",
+"Magician",
+"Dishwasher",
+"CEO",
+"Butcher",
+"Assassin",
+"Teacher"
+]
+
 Races = {
 "Human": 1,
 "Elf": 7,
