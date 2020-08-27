@@ -4,18 +4,19 @@
 # CHECK # Age based on infant, child, teen, young adult, adult, senior
 # CHECK # Race
 # CHECK # Age multiplier depending on Race
-# # Quirk
+# CHECK # Quirk
 # CHECK # Class
 # CHECK # Occupation
 # CHECK # Add Occupations list to characterClassesAndRaces data file
 # # Add "None" value to Age when rolling and no boxes checked.
-# # Add "Roll All" button
+# CHECK # Add "Roll All" button
 
 import random
 import data.characterTraits as cT
 posNeuNeg = ["Positive: ","Neutral: ","Negative: "]
 import data.characterNames as cN
 import data.characterClassesAndRaces as cCR
+import data.characterQuirks as cQ
 import tkinter
 from tkinter import *
 
@@ -24,7 +25,7 @@ class CharGen:
         #Building the GUI basics
         self.mainWindow = tkinter.Tk()
         self.windowTitle = "Random Character Generator 9000"
-        self.windowSize = "600x430"
+        self.windowSize = "600x490"
         self.font = "Arial"
         self.fontSize = 12
         self.mainWindow.geometry(self.windowSize)
@@ -37,6 +38,15 @@ class CharGen:
         self.raceText = tkinter.StringVar()
         self.classText = tkinter.StringVar()
         self.occupationText = tkinter.StringVar()
+        self.quirkText = tkinter.StringVar()
+
+        #Create ROLL ALL frame
+        self.rollAllFrame = LabelFrame(self.mainWindow, width = 600, height=50)
+        self.rollAllFrame.grid(row=4,column=0,columnspan=2)
+        self.rollAllFrame.pack_propagate(0)
+        #Roll All
+        self.rollAll_button = tkinter.Button(self.rollAllFrame, text = "Roll All!",
+        command = self.UpdateAllText, width=30,height=3).pack()       
 
         #Creates, populates and packs the frame for the NAME section.
         self.nameGenderFrame = LabelFrame(self.mainWindow, text = "Name",width=300,height=110)
@@ -79,7 +89,7 @@ class CharGen:
         self.classReRoll_button = tkinter.Button(self.classLabelFrame, text = "Roll!",
         command = self.UpdateClassText).pack(anchor=E)
 
-#Creates, populates and packs the frame for the OCCUPATION section.
+        #Creates, populates and packs the frame for the OCCUPATION section.
         self.occupationLabelFrame = LabelFrame(self.mainWindow, text = "Occupation",width=300,height=110)
         self.occupationLabelFrame.grid(row=3,column=1)
         self.occupationLabelFrame.pack_propagate(0)
@@ -92,16 +102,28 @@ class CharGen:
         command = self.UpdateOccupationText).pack(anchor=E)
 
         #Creates, populates and packs the frame for the TRAIT section.
-        self.traitlabelframe = LabelFrame(self.mainWindow, text = "Traits",width=600,height=110)
-        self.traitlabelframe.grid(row=1,column=0,columnspan=2)
+        self.traitlabelframe = LabelFrame(self.mainWindow, text = "Traits",width=300,height=110)
+        self.traitlabelframe.grid(row=1,column=0)
         self.traitlabelframe.pack_propagate(0)
-        self.traitText.set("Roll Traits")
+        self.traitText.set("Positive: \n Neutral: \n Negative: \n ")
         tkinter.Label(self.traitlabelframe, textvariable = self.traitText).pack()
 
         #Now we roll the TRAITS
         self.reRoll_button = tkinter.Button(self.traitlabelframe, text = "Roll!",
         command = self.UpdateTraitText)
         self.reRoll_button.pack(anchor=E)
+
+        #Creates, populates and packs the frame for the QUIRK section.
+        self.quirkLabelFrame = LabelFrame(self.mainWindow, text = "Quirk",width=300,height=110)
+        self.quirkLabelFrame.grid(row=1,column=1)
+        self.quirkLabelFrame.pack_propagate(0)
+        
+        self.quirkText.set("Roll Quirk")
+        tkinter.Label(self.quirkLabelFrame, textvariable = self.quirkText).pack()
+
+        #Now we roll the QUIRK
+        self.quirkReRoll_button = tkinter.Button(self.quirkLabelFrame, text = "Roll!",
+        command = self.UpdateQuirkText).pack(anchor=E)        
 
         #Creates, populates and packs the frame for the AGE SELECTION section.
         self.ageSelectFrame = LabelFrame(self.mainWindow, text = "Age",width=300,height=220)
@@ -131,6 +153,26 @@ class CharGen:
 
         #Call the whole window into existence
         self.mainWindow.mainloop()
+
+    def UpdateAllText(self):
+        self.maleVar.set(1)
+        self.femaleVar.set(1)
+        self.UpdateNameText()
+
+        self.UpdateRaceText()
+        self.UpdateTraitText()
+        self.UpdateQuirkText()
+        
+        self.infantVar.set(1)
+        self.childVar.set(1)
+        self.teenVar.set(1)
+        self.youngAdultVar.set(1)
+        self.adultVar.set(1)
+        self.seniorVar.set(1)
+        self.UpdateAgeText()
+
+        self.UpdateClassText()
+        self.UpdateOccupationText()
 
     #Name Randomization
     def RandomizeName(self):
@@ -197,6 +239,15 @@ class CharGen:
     def UpdateTraitText(self):
         self.traitText.set(self.RandomizeTraits())
 
+    #Quirk Randomization
+    def RandomizeQuirk(self):
+        self.randQuirkIndex = random.choice(list(cQ.quirks))
+
+        return self.randQuirkIndex
+    
+    def UpdateQuirkText(self):
+        self.quirkText.set(self.RandomizeQuirk())
+
     #Age Randomization
     def RandomizeAge(self):
         print("NEW ROLL")
@@ -210,20 +261,25 @@ class CharGen:
             4:[30,50],
             5:[50,100]
         }
+
+
         for i in range(0,len(checker)):
             if checker[i].get() == 1:
                 activeRanges.append(ageDict[i])
-        print (activeRanges)
+
+        print ("TESTING")
+        if len(activeRanges) == 0:
+            return None
 
         activeRangesIndex = random.randrange(0,len(activeRanges))
         activeRange = activeRanges[activeRangesIndex]
         age = random.randrange(activeRange[0],activeRange[1])
 
         if self.raceText.get() == "Roll Race":
-            return age
+            return round(age)
         else:
             age = age * cCR.Races[self.randRaceIndex]            
-            return age
+            return round(age)
 
     def UpdateAgeText(self):
         self.ageText.set(self.RandomizeAge())
