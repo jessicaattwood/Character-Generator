@@ -43,4 +43,4 @@ The age multipliers for the currently available races:
 A random class is supplied, such as fighter, bard, rougue, wizard etc.
 
 #### Occupation
-A random occupation is supplied, such as florist, bar keeper, doctor, Blacksmith etc.
+A random occupation is supplied, such as florist, bar keeper, doctor, blacksmith etc.
