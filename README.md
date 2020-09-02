@@ -6,7 +6,11 @@ This tool is designed to assist in basic character conceptualization. By providi
 ![ScreenShot](examples/CharactrGenerator.JPG?raw=true "Character Generator Example")
 
 ## Current State
-The Character Generator tool is still in development, and is built with Python and the tkinter library. It is in a functional state, however some combinations may be nonsensicle; such as a human 2 year old, who is a wizard and works as a carpenter. Additionally, some sections currently have limited potential outputs. The user can choose to re-roll specific areas in search of a more appropriate option, or simply re-roll the entire character.
+The Character Generator tool is still in development, and is built with Python and the tkinter library.
+
+The tool is in a functional state, however some combinations may be nonsensicle; such as a human 2 year old, who is a wizard and works as a carpenter. This will remain in the tool to provide the user with full control over how they interpret the information. For example, a story writer may interpret the information creatively; the human 2 year old is predisposed to wizardry but will start out as a carpentery apprentice before realizing their full magical potential. Or, the user can choose to re-roll specific areas in search of a more appropriate option.
+
+Some sections currently have limited potential outputs, and they will be expanded over time. Users can easily add their own optins as well, by following the correct format in each of the 'data' documents.
 
 ## Features
 
